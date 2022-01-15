@@ -46,6 +46,7 @@ class ParticleAnimation extends PureComponent {
       b: PropTypes.number,
       a: PropTypes.number
     }),
+    noBackground: PropTypes.Boolean,
     size: PropTypes.shape({
       width: PropTypes.number,
       height: PropTypes.number
@@ -71,6 +72,7 @@ class ParticleAnimation extends PureComponent {
       b: 255,
       a: 255
     },
+    noBackground: false,
     style: {}
   }
 
@@ -148,7 +150,7 @@ class ParticleAnimation extends PureComponent {
   }
 
   _draw() {
-    const { interactive, lineWidth, background, color, size } = this.props
+    const { interactive, lineWidth, background, noBackground, color, size } = this.props
 
     if (!this._canvas) return
     const canvas = this._canvas.current
@@ -157,8 +159,12 @@ class ParticleAnimation extends PureComponent {
     const ctx = canvas.getContext('2d')
 
     // clear background
-    ctx.fillStyle = `rgba(${background.r}, ${background.g}, ${background.b}, ${background.a})`
-    ctx.fillRect(0, 0, size.width, size.height)
+    if(noBackground){
+      ctx.clearRect(0, 0, size.width, size.height);
+    }else{
+      ctx.fillStyle = `rgba(${background.r}, ${background.g}, ${background.b}, ${background.a})`
+      ctx.fillRect(0, 0, size.width, size.height)
+    }
 
     ctx.lineWidth = lineWidth
 
